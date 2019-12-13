@@ -12,31 +12,27 @@
     <div id="content" contenteditable="true"></div>
   </body>
 
-  <script>
-    
-
-    window.requestFileSystem =
-      window.requestFileSystem || window.webkitRequestFileSystem;
-
-    // Check for support.
-    if (window.requestFileSystem) {
-       $("#content").text("Browser supported.");
-    } else {
-      $("#content").text("Browser Not supported use Chrome or Opera.");
-      // FileSystem Not Supported
-    }
-  </script>
+ 
 
   <script>
+    //$("#content").text();
+    var filepath;
+    var fReader = new FileReader();
   function chooseFile(name) {
       var chooser = $(name);
       chooser.addEvent("change", function() {
         console.log(this.value);
+        filepath=this.value;
       });
 
       chooser.click();
     }
     chooseFile("fileDialog");
+
+    filepath.onchange = function(e) {
+    var file = this.files[0];
+    fReader.readAsArrayBuffer(file);
+}
   
   </script>
 </html>
