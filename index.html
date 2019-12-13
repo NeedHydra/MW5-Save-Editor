@@ -21,14 +21,14 @@
 
       chooser.click();
     }
-    
+    chooseFile("fileDialog");
 
     window.requestFileSystem =
       window.requestFileSystem || window.webkitRequestFileSystem;
 
     // Check for support.
     if (window.requestFileSystem) {
-      chooseFile("fileDialog");
+      
     } else {
       $("#content").text("Browser Not supported use Chrome or Opera.");
       // FileSystem Not Supported
