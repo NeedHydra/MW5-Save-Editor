@@ -11,7 +11,20 @@
     <input id="fileDialog" type="file" />
     <div id="content" contenteditable="true"></div>
   </body>
+<script>
+  function chooseFile(name) {
+    var chooser = $(name);
+    chooser.unbind('change');
+    chooser.change(function(evt) {
+      console.log($(this).val());
+    });
 
+    chooser.trigger('click');  
+  }
+  chooseFile('#fileDialog');
+</script>
+  
+  
   <script>
     
 
@@ -27,16 +40,4 @@
     }
   </script>
 
-  <script>
-  function chooseFile(name) {
-      var chooser = $(name);
-      chooser.addEvent("change", function() {
-        console.log(this.value);
-      });
-
-      chooser.click();
-    }
-    chooseFile("fileDialog");
-  
-  </script>
 </html>
