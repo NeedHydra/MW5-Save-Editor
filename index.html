@@ -12,14 +12,13 @@
 
     <!-- accept a text file -->
     <input type="file" id="file-input" style="display:none" accept=".sav" />
-    <div id="content" contenteditable="true"></div>
+    <div id="content"></div>
   </body>
 
   <script>
-    
-    
-    var textArr =[],fullArr=[];
-    var bytearray ;
+    var textArr = [],
+      fullArr = [];
+    var bytearray;
     document
       .querySelector("#file-input")
       .addEventListener("change", function() {
@@ -33,9 +32,8 @@
 
         // file validation is successful
         // we will now read the file
-     
+
         var reader = new FileReader();
-        
 
         // file reading started
         reader.addEventListener("loadstart", function() {
@@ -48,7 +46,7 @@
 
           // contents of the file
           console.log(bytearray);
-          
+
           ReadFile();
         });
 
@@ -65,7 +63,6 @@
           }
         });
 
-
         // read as text file
         reader.readAsArrayBuffer(file);
       });
@@ -73,47 +70,55 @@
       return String.fromCharCode.apply(null, new Uint8Array(buf));
     }
 
-    function ReadFile()
-    {
+    function ReadFile() {
       console.log("Converting");
       console.log(bytearray.byteLength);
       var CHUNK_SIZE = 1024;
-      var offset = 0;
-      var index=0,lastindex=0;
-      var numOfNull=0;
+      var id = 0;
+      var index = 0,
+        startindex = 0,
+        lastcharindex;
+      var numOfNull = 0;
       var arr = new Uint8Array(bytearray);
-      while(index<bytearray.byteLength)
-      {
+      while (index < bytearray.byteLength) {
         //console.log(index);
         //console.log(arr[index]);
-          if(arr[index]==0)
-          {
-           
-            numOfNull++;
-            if(numOfNull>=4)
-            {
-              var text =ab2str(arr.subarray(lastindex, index));
-             
-              var p = {'index' : lastindex, 'text': text};
-              
-              if(text.length>2)
-              {
-                textArr.push(p);
-                $("#content").append("</br>"+ text+" starts at byte "+ lastindex);
-              }
-              //console.log(text);
-              lastindex= index;
-              setTimeout(0);
-            }
-          }
-          index++;
-          
+        if (arr[index] == 0) {
+          numOfNull++;
+        } else if (numOfNull >= 2) {
+          var subarr =arr.subarray(startindex, index)
+          var text = ab2str(subarr);
 
+          var p = {id: id, arr: subarr, start: startindex, end: lastcharindex, text: text };
+          fullArr.push(p);
+          if (text.length > 2) {
+            textArr.push(p);
+            $("#content").append(
+              "<p id='l"+id+"'>" + pad(startindex, 10) +" > "+ pad(lastcharindex, 10)+ " : " + text + "</p>"
+            );
+          }
+          //console.log(text);
+          startindex = index;
+          lastcharindex=index;
+          numOfNull=0;
+          id++;
+          setTimeout(0);
+        }
+        else 
+        {
+          lastcharindex=index-1;
+        }
+        index++;
       }
       console.log(textArr);
-
     }
 
-
+    function pad(n, width, z) {
+      z = z || "0";
+      n = n + "";
+      return n.length >= width
+        ? n
+        : new Array(width - n.length + 1).join(z) + n;
+    }
   </script>
 </html>
