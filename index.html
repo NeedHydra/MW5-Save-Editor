@@ -16,6 +16,10 @@
   </body>
 
   <script>
+    
+    
+    var textArr =[],fullArr=[];
+    var bytearray ;
     document
       .querySelector("#file-input")
       .addEventListener("change", function() {
@@ -29,8 +33,9 @@
 
         // file validation is successful
         // we will now read the file
-
+     
         var reader = new FileReader();
+        
 
         // file reading started
         reader.addEventListener("loadstart", function() {
@@ -39,10 +44,12 @@
 
         // file reading finished successfully
         reader.addEventListener("load", function(e) {
-          var text = e.target.result;
+          bytearray = e.target.result;
 
           // contents of the file
-          console.log(text);
+          console.log(bytearray);
+          
+          ReadFile();
         });
 
         // file reading failed
@@ -58,9 +65,54 @@
           }
         });
 
+
         // read as text file
         reader.readAsArrayBuffer(file);
-        //reader.readAsBinaryString(file);
       });
+    function ab2str(buf) {
+      return String.fromCharCode.apply(null, new Uint8Array(buf));
+    }
+
+    function ReadFile()
+    {
+      console.log("Converting");
+      console.log(bytearray.byteLength);
+      var CHUNK_SIZE = 1024;
+      var offset = 0;
+      var index=0,lastindex=0;
+      var numOfNull=0;
+      var arr = new Uint8Array(bytearray);
+      while(index<bytearray.byteLength)
+      {
+        //console.log(index);
+        //console.log(arr[index]);
+          if(arr[index]==0)
+          {
+           
+            numOfNull++;
+            if(numOfNull>=4)
+            {
+              var text =ab2str(arr.subarray(lastindex, index));
+              var p = {'index' : lastindex, 'text': text};
+              
+              if(text.length>2)
+              {
+                textArr.push(p);
+               
+              }
+              //console.log(text);
+              lastindex= index;
+              setTimeout(0);
+            }
+          }
+          index++;
+          
+
+      }
+      console.log(textArr);
+
+    }
+
+
   </script>
 </html>
