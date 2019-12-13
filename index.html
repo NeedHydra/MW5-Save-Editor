@@ -1,6 +1,27 @@
+<!-- MIT License
+
+Copyright (c) 2019 NeedHydra - Paul Martin Gentile
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. -->
 <html>
   <head>
-    <title>Text Editor</title>
+    <title>MW5 Mercs save game editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
@@ -8,117 +29,20 @@
   </head>
   <body>
     <p>Select save from AppData\Local\MW5Mercs\Saved\SaveGames</p>
-    <label for="file-input">Choose File</label>
+    <p>Very much work in progress</p>
+    <p>if the left vaules are way to far apart or worng you can adjust it with the number boxes</p>
+    <div>
+      <label for="file-input">Choose File</label>
 
-    <!-- accept a text file -->
-    <input type="file" id="file-input" style="display:none" accept=".sav" />
-    <div id="content"></div>
+      <!-- accept a text file -->
+      <input type="file" id="file-input" style="display:none" accept=".sav" />
+    </div>
+
+    <div id="content" style="min-height: 20px;"></div>
+    <button type="button" id="Export" onclick="SaveFile()">Export</button>
   </body>
 
-  <script>
-    var textArr = [],
-      fullArr = [];
-    var bytearray;
-    document
-      .querySelector("#file-input")
-      .addEventListener("change", function() {
-        // list of selected files
-        var all_files = this.files;
-        if (all_files.length == 0) {
-          alert("Error : No file selected");
-          return;
-        }
-        var file = all_files[0];
-
-        // file validation is successful
-        // we will now read the file
-
-        var reader = new FileReader();
-
-        // file reading started
-        reader.addEventListener("loadstart", function() {
-          console.log("File reading started");
-        });
-
-        // file reading finished successfully
-        reader.addEventListener("load", function(e) {
-          bytearray = e.target.result;
-
-          // contents of the file
-          console.log(bytearray);
-
-          ReadFile();
-        });
-
-        // file reading failed
-        reader.addEventListener("error", function() {
-          alert("Error : Failed to read file");
-        });
-
-        // file read progress
-        reader.addEventListener("progress", function(e) {
-          if (e.lengthComputable == true) {
-            var percent_read = Math.floor((e.loaded / e.total) * 100);
-            console.log(percent_read + "% read");
-          }
-        });
-
-        // read as text file
-        reader.readAsArrayBuffer(file);
-      });
-    function ab2str(buf) {
-      return String.fromCharCode.apply(null, new Uint8Array(buf));
-    }
-
-    function ReadFile() {
-      console.log("Converting");
-      console.log(bytearray.byteLength);
-      var CHUNK_SIZE = 1024;
-      var id = 0;
-      var index = 0,
-        startindex = 0,
-        lastcharindex;
-      var numOfNull = 0;
-      var arr = new Uint8Array(bytearray);
-      while (index < bytearray.byteLength) {
-        //console.log(index);
-        //console.log(arr[index]);
-        if (arr[index] == 0) {
-          numOfNull++;
-        } else if (numOfNull >= 2) {
-          var subarr =arr.subarray(startindex, index)
-          var text = ab2str(subarr);
-
-          var p = {id: id, arr: subarr, start: startindex, end: lastcharindex, text: text };
-          fullArr.push(p);
-          if (text.length > 2) {
-            textArr.push(p);
-            $("#content").append(
-              "<p id='l"+id+"'>" + pad(startindex, 10) +" > "+ pad(lastcharindex, 10)+ " : " + text + "</p>"
-            );
-          }
-          //console.log(text);
-          startindex = index;
-          lastcharindex=index;
-          numOfNull=0;
-          id++;
-          setTimeout(0);
-        }
-        else 
-        {
-          lastcharindex=index-1;
-        }
-        index++;
-      }
-      console.log(textArr);
-    }
-
-    function pad(n, width, z) {
-      z = z || "0";
-      n = n + "";
-      return n.length >= width
-        ? n
-        : new Array(width - n.length + 1).join(z) + n;
-    }
+  <script src="app.js">
+    
   </script>
 </html>
