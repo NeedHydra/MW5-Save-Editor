@@ -12,12 +12,7 @@
     <div id="content" contenteditable="true"></div>
   </body>
 
- 
-
-  <script>
-    //$("#content").text();
-    var filepath;
-    var fReader = new FileReader();
+ <script>
   function chooseFile(name) {
       var chooser = $(name);
       chooser.addEvent("change", function() {
@@ -28,10 +23,16 @@
       chooser.click();
     }
     chooseFile("fileDialog");
+ </script>
 
+  <script>
+    //$("#content").text();
+    var filepath;
+    var fReader = new FileReader();
     filepath.onchange = function(e) {
     var file = this.files[0];
-    fReader.readAsArrayBuffer(file);
+    
+    fReader.readAsBinaryString(file);
 }
   
   </script>
