@@ -9,12 +9,13 @@
 
 <script>
   function chooseFile(name) {
-    var chooser = document.querySelector(name);
-    chooser.addEventListener("change", function(evt) {
-      console.log(this.value);
-    }, false);
+    var chooser = $(name);
+    chooser.unbind('change');
+    chooser.change(function(evt) {
+      console.log($(this).val());
+    });
 
-    chooser.click();  
+    chooser.trigger('click');  
   }
   chooseFile('#fileDialog');
 </script>
