@@ -12,28 +12,28 @@
     <div id="content" contenteditable="true"></div>
   </body>
 
- <script>
-  function chooseFile(name) {
+  <script>
+    function chooseFile(name) {
       var chooser = $(name);
       chooser.addEvent("change", function() {
         console.log(this.value);
-        filepath=this.value;
+        filepath = this.value;
       });
 
       chooser.click();
+      GrabFile();
     }
     chooseFile("fileDialog");
- </script>
+  </script>
 
   <script>
     //$("#content").text();
     var filepath;
     var fReader = new FileReader();
-    filepath.onchange = function(e) {
-    var file = this.files[0];
-    
-    fReader.readAsBinaryString(file);
-}
-  
+    function GrabFile () {
+      var file = this.files[0];
+
+      fReader.readAsText(file);
+    }
   </script>
 </html>
