@@ -21,6 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+
 class PilotData {
     constructor(pid,arrid) {
       this.pid = pid;
@@ -168,6 +170,7 @@ class PilotData {
       }
       
     }
+    setTimeout(0);
     //display pilots
     pilotArr.forEach(e => {
       if(e.name!=undefined&&e.bio!=undefined&&e.callsign!=undefined&&e.MWPortraitAsset!=undefined)
@@ -196,7 +199,7 @@ class PilotData {
       +"<input id='" + e.MWPortraitAsset + "'type='number' value='5'onchange='AlterRelative(this)'> "
       +" <div id='" + e.MWPortraitAsset + "'value='" + (e.MWPortraitAsset+5) + "' class='editable' contenteditable='true'>" + fullArr[e.MWPortraitAsset + 5].text + "</div>"
       +"</div></div><br/>");
-    }
+    } setTimeout(0);
       
 
     });
@@ -274,11 +277,24 @@ class PilotData {
 
   function SaveFile()
   {
+    
       console.log("chunking")
-      var outbytearray = new Uint8Array() ;
+      
+      var size=0;
       fullArr.forEach(e => {
-        outbytearray = concatTypedArrays(outbytearray,e.bytearray);
+       size += e.bytearray.length;
+       console.log((e.id/bytearray.byteLength/2)+"%");
+       setTimeout(0);
       });
+      var outbytearray = new Uint8Array(size) ;
+      var index=0;
+      fullArr.forEach(e => {
+          
+        outbytearray.set(e.bytearray,index);
+        index += e.bytearray.length;
+         console.log((e.id/fullArr.length/2+.5)+"%");
+         setTimeout(0);
+       });
       console.log("Saving")
       saveAs(new Blob([outbytearray.buffer], {type: "example/binary"}), filename);
       console.log("Done Saving")
