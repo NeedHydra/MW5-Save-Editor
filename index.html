@@ -93,12 +93,13 @@
             if(numOfNull>=4)
             {
               var text =ab2str(arr.subarray(lastindex, index));
+             
               var p = {'index' : lastindex, 'text': text};
               
               if(text.length>2)
               {
                 textArr.push(p);
-               
+                $("#content").append("</br>"+ text+" starts at byte "+ lastindex);
               }
               //console.log(text);
               lastindex= index;
