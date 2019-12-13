@@ -8,32 +8,59 @@
   </head>
   <body>
     <p>Select save from AppData\Local\MW5Mercs\Saved\SaveGames</p>
-    <input id="fileDialog" type="file" />
+    <label for="file-input">Choose File</label>
+
+    <!-- accept a text file -->
+    <input type="file" id="file-input" style="display:none" accept=".sav" />
     <div id="content" contenteditable="true"></div>
   </body>
 
   <script>
-    function chooseFile(name) {
-      var chooser = $(name);
-      chooser.addEvent("change", function() {
-        console.log(this.value);
-        filepath = this.value;
+    document
+      .querySelector("#file-input")
+      .addEventListener("change", function() {
+        // list of selected files
+        var all_files = this.files;
+        if (all_files.length == 0) {
+          alert("Error : No file selected");
+          return;
+        }
+        var file = all_files[0];
+
+        // file validation is successful
+        // we will now read the file
+
+        var reader = new FileReader();
+
+        // file reading started
+        reader.addEventListener("loadstart", function() {
+          console.log("File reading started");
+        });
+
+        // file reading finished successfully
+        reader.addEventListener("load", function(e) {
+          var text = e.target.result;
+
+          // contents of the file
+          console.log(text);
+        });
+
+        // file reading failed
+        reader.addEventListener("error", function() {
+          alert("Error : Failed to read file");
+        });
+
+        // file read progress
+        reader.addEventListener("progress", function(e) {
+          if (e.lengthComputable == true) {
+            var percent_read = Math.floor((e.loaded / e.total) * 100);
+            console.log(percent_read + "% read");
+          }
+        });
+
+        // read as text file
+        reader.readAsArrayBuffer(file);
+        //reader.readAsBinaryString(file);
       });
-
-      chooser.click();
-      GrabFile();
-    }
-    chooseFile("fileDialog");
-  </script>
-
-  <script>
-    //$("#content").text();
-    var filepath;
-    var fReader = new FileReader();
-    function GrabFile () {
-      var file = this.files[0];
-
-      fReader.readAsText(file);
-    }
   </script>
 </html>
