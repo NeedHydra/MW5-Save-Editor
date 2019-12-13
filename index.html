@@ -1,28 +1,17 @@
 <html>
-<head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-  
+	<head>
+	  <title>Text Editor</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+      <p>Select save from AppData\Local\MW5Mercs\Saved\SaveGames</p>
+      
+		 
+		 <div id="content" contenteditable="true"></div>
 
-</head>
-<body>
+  </body>
 
-<h1>Select save from AppData\Local\MW5Mercs\Saved\SaveGames</h1>
-<input id="fileDialog" type="file" accept=".sav"/>
-<div class="text">
-    
-</div>
-<script>
-  function chooseFile(name) {
-    var chooser = $(name);
-    chooser.unbind('change');
-    chooser.change(function(evt) {
-      console.log($(this).val());
-      $(".text").load($(this).val());
-    });
+	<script src="app.js"></script>
 
-    chooser.trigger('click');  
-  }
-  chooseFile('#fileDialog');
-</script>
-</body>
-</html>
+  </html>
