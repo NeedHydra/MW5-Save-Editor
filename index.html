@@ -13,15 +13,7 @@
   </body>
 
   <script>
-    function chooseFile(name) {
-      var chooser = $(name);
-      chooser.addEvent("change", function() {
-        console.log(this.value);
-      });
-
-      chooser.click();
-    }
-    chooseFile("fileDialog");
+    
 
     window.requestFileSystem =
       window.requestFileSystem || window.webkitRequestFileSystem;
@@ -33,5 +25,18 @@
       $("#content").text("Browser Not supported use Chrome or Opera.");
       // FileSystem Not Supported
     }
+  </script>
+
+  <script>
+  function chooseFile(name) {
+      var chooser = $(name);
+      chooser.addEvent("change", function() {
+        console.log(this.value);
+      });
+
+      chooser.click();
+    }
+    chooseFile("fileDialog");
+  
   </script>
 </html>
